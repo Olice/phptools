@@ -15,7 +15,7 @@
  *                       eg, for pages the ID in the XML file is still page1-1-1
  *                       for interactives it is now page1-1-1-interactive1
  * 
- * 2014-11-25: Now replaces values on INPUT tags 
+ * 2014-11-25: Now replaces values on INPUT tags and data caption attributes 
  */
 $(function() {
     // Create an IE friendly version of console.log if there is none
@@ -64,15 +64,25 @@ $(function() {
                 //$('[data-text-id=' + id + ']').html(text);
 
                 $('[data-text-id=' + id + ']').each(function(i, element) {
-                    switch(element.tagName) {
 
-                        case 'INPUT':
-                            $(element).val(text);
-                            break;
-
-                        default:
-                            $(element).html(text);
+                    var $ele = $(element);
+                        
+                    // Data captions
+                    if($ele.attr('data-caption')) {
+                        $ele.attr('data-caption', text);
                     }
+
+                    // Input fields
+                    else if ($ele.get(0).tagName == 'INPUT') {
+                        $ele.val(text);
+                    }
+
+                    // Default tags
+                    else {
+                        $ele.html(text);
+                    };
+
+                    
                 });
 
 
