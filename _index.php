@@ -39,16 +39,16 @@ include 'classes/OliceXmlSplitter.php';
 include 'classes/OliceXmlHelper.php';
 
 
-$module = 6;
-
+$module = 3;
+$src = '../ibrutinib-v1-it/ibrutinib-module';
 // Reads in HTML files, automatically extracts content from P, H1-H6, LI tags and places
 // in XML file.  Automatically adds data attribute to source HTML file
 $olice = new OliceTranslation();
-$olice->setSrcPath('Languages/English/Modules/ibrutinib-module' . $module . '/content_en/');
+$olice->setSrcPath($src . $module . '/content_it/');
 $olice->findHtmlFiles();
-$olice->setHtmlPath('Languages/English/Modules/ibrutinib-module' . $module . '-exported/content_es/');
+$olice->setHtmlPath($src . $module . '/content_it-exported/');
 $olice->parseFiles();
-$olice->exportXml('Languages/English/Modules/ibrutinib-module' . $module . '-exported/content_es/content.xml');
+$olice->exportXml($src . $module . '/content_it-exported/content.xml');
 
 
 
