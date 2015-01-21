@@ -102,8 +102,8 @@ class OliceTranslation {
 		$htmlFiles= array();
 		foreach($regex as $item) {
 		  $file = (string)$item[0];
-		  if(strpos($file, '_proc') === false) {
-				$htmlFiles[] = (string)$item[0];
+		  if(strpos($file, '_proc') === false && (!preg_match('/m[0-9]+\.html$/', $file) )) {
+				$htmlFiles[] = (string)$file;
 				$this->log('Source HTML file: ' . $file);
 			}
 		}
@@ -133,7 +133,7 @@ class OliceTranslation {
 	 */
 	public function parseFiles() {
 		$htmlFiles = $this->findHtmlFiles();
-		
+
 		$helper = new OliceXmlHelper();
 		
 		foreach($htmlFiles as $i => $file) {
