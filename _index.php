@@ -40,8 +40,10 @@ include 'classes/OliceXmlHelper.php';
 
 
 $module = 8;
+
 $src = 'm' . $module . '/';
 $dest= 'm' . $module . '-exported/';
+
 
 // Reads in HTML files, automatically extracts content from P, H1-H6, LI tags and places
 // in XML file.  Automatically adds data attribute to source HTML file
