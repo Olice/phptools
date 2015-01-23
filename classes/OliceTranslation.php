@@ -102,8 +102,8 @@ class OliceTranslation {
 		$htmlFiles= array();
 		foreach($regex as $item) {
 		  $file = (string)$item[0];
-		  if(strpos($file, '_proc') === false) {
-				$htmlFiles[] = (string)$item[0];
+		  if(strpos($file, '_proc') === false && (!preg_match('/m[0-9]+\.html$/', $file) )) {
+				$htmlFiles[] = (string)$file;
 				$this->log('Source HTML file: ' . $file);
 			}
 		}
@@ -133,7 +133,7 @@ class OliceTranslation {
 	 */
 	public function parseFiles() {
 		$htmlFiles = $this->findHtmlFiles();
-		
+
 		$helper = new OliceXmlHelper();
 		
 		foreach($htmlFiles as $i => $file) {
@@ -169,7 +169,7 @@ class OliceTranslation {
 			
 			// Use DOMXPath to find paragraph tags etc. - these are all block level
 			$xpath 		= new DOMXpath($dom);
-			$elements = $xpath->query("//td | //th | //p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //li | //div[@id='intro_buttons']//a | //div[@data-caption] | //div[@class='button-text'] | //a[contains(@class ,'interactive-button')] | //input[@value] | //*[@data-text-id]"); 
+			$elements = $xpath->query("//td | //th | //p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //li | //div[@id='intro_buttons']//a | //div[@data-caption] | //div[@class='button-text'] | //a[contains(@class ,'interactive-button')] | //input[@value] | //*[@data-text-id] | //label[@data-quiz='answer']/span"); 
 			
 			foreach($elements as $i => $element) {
 	
