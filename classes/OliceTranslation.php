@@ -165,11 +165,12 @@ class OliceTranslation {
 						
 			// Parse HTML into node tree using DOMDocument
 			$dom = new DomDocument();
-			$dom->loadHTML($pageHtml);
+			// See http://stackoverflow.com/questions/11309194/php-domdocument-failing-to-handle-utf-8-characters-%E2%98%86
+			$dom->loadHTML('<meta http-equiv="content-type" content="text/html; charset=utf-8">' . $pageHtml);
 			
 			// Use DOMXPath to find paragraph tags etc. - these are all block level
 			$xpath 		= new DOMXpath($dom);
-			$elements = $xpath->query("//td | //th | //p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //li | //div[@id='intro_buttons']//a | //div[@data-caption] | //div[@class='button-text'] | //a[contains(@class ,'interactive-button')] | //input[@value] | //*[@data-text-id] | //label[@data-quiz='answer']/span"); 
+			$elements = $xpath->query("//td | //th | //p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //li | //div[@id='intro_buttons']//a | //div[@data-caption] | //div[@class='button-text'] | //a[contains(@class ,'interactive-button')] | //input[@value] | //*[@data-text-id] | //label[@data-quiz='answer']/span | //div[@class='button_text']"); 
 			
 			foreach($elements as $i => $element) {
 	
