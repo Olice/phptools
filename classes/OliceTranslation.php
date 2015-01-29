@@ -195,9 +195,8 @@ class OliceTranslation {
 					// Use CData for escaping
 					$xmlChild = $xmlPage->addChild('text');
 					$xmlChild->addCData($element->getAttribute('data-caption'));
-					$xmlChild->addAttribute('id', 'text-' . $i);
+					$xmlChild->addAttribute('id', $id);
 					
-
 					// CHange caption so we know it's been translated
 					$element->setAttribute('data-caption', '-- Translated --');
 
