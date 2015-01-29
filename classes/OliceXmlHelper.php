@@ -8,6 +8,10 @@ class OliceXmlHelper {
 	 * @param string $dest
 	 */
 	private function export(SimpleXMLElement $xml, $dest, $mode = 'xml') {
+
+		// Set UTF-8
+		$xml->addAttribute('encoding', 'UTF-8');
+		
 		// Save nicely formatted file
 		$dom = dom_import_simplexml($xml)->ownerDocument;
 		$dom->preserveWhiteSpace = false;
