@@ -17,6 +17,17 @@
  * 
  * 2014-11-25: Now replaces values on INPUT tags and data caption attributes 
  */
+
+if (!String.prototype.trim) {
+  (function() {
+    // Make sure we trim BOM and NBSP
+    var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+    String.prototype.trim = function() {
+      return this.replace(rtrim, '');
+    };
+  })();
+}
+
 $(function() {
     // Create an IE friendly version of console.log if there is none
     if (!window.console) console = {
@@ -59,7 +70,7 @@ $(function() {
             for (i = 0; i < tags.length; i++) {
 
                 var id = $(tags[i]).attr('id');
-                var text = $(tags[i]).text();
+                var text = $(tags[i]).text().trim();
 
                 //$('[data-text-id=' + id + ']').html(text);
 
