@@ -138,6 +138,8 @@ class OliceTranslation {
 		
 		foreach($htmlFiles as $i => $file) {
 
+			error_log($file);
+
 			//$this->log('max time' . ini_get('max_execution_time'));
 			$this->log('Processing ' . $file);
 
@@ -165,9 +167,25 @@ class OliceTranslation {
 						
 			// Parse HTML into node tree using DOMDocument
 			$dom = new DomDocument();
+
+
+		
+
+
 			// See http://stackoverflow.com/questions/11309194/php-domdocument-failing-to-handle-utf-8-characters-%E2%98%86
-			$dom->loadHTML('<meta http-equiv="content-type" content="text/html; charset=utf-8">' . $pageHtml);
 			
+			// If there's already a doctype, ignore
+			if(preg_match('/doctype/i', $pageHtml)) {
+				error_log('Has doctype');
+				$dom->loadHTML($pageHtml);
+			}
+			// Otherwise, we have an HTML fragment
+			else {
+				error_log('No doctype');
+				$dom->loadHTML('<meta http-equiv="content-type" content="text/html; charset=utf-8">' . $pageHtml);
+			}
+
+
 			// Use DOMXPath to find paragraph tags etc. - these are all block level
 			$xpath 		= new DOMXpath($dom);
 			$elements = $xpath->query("//td | //th | //p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //li | //div[@id='intro_buttons']//a | //div[@data-caption] | //div[@class='button-text'] | //a[contains(@class ,'interactive-button')] | //input[@value] | //*[@data-text-id] | //label[@data-quiz='answer']/span | //div[@class='button_text']"); 
@@ -183,10 +201,10 @@ class OliceTranslation {
 				$id = $element->getAttribute('id');
 				$id = empty($id) ? 'text-' . $i : $id;
 
-				// $this->log($id);
-
 				// Set new data attribute 
 				$element->setAttribute('data-text-id', $id);
+
+				// error_log($element->tagName . ' ID: ' . $id.  ' ' . $element->textContent);
 
 				// For DIV's with data caption attribute only, these are processed differently 
 				// because the text is in the attribute
@@ -213,13 +231,21 @@ class OliceTranslation {
 					// This is the HTML content including parent tag
 					$htmlContent = $dom->saveHTML($element);
 
-
 					// Input fields - get value attribue
 					if($element->tagName == 'input') {
 						$innerContent = $element->getAttribute('value');
 					}
 					// Get inner content of tag with child nodes
-					elseif($element->hasChildNodes()) {
+					//elseif($element->hasChildNodes()) {
+					//	error_log(get_class($element));
+					// See http://php.net/manual/en/domnode.haschildnodes.php
+
+					// If script gets stuck here, it's probably due to an 
+					// unsupported nesting of elements matched by the xpath expression\
+					// eg. a P inside a TD, both of which are matched
+					// add the data-text-ignore to the parent, eg the TD 
+
+					elseif($element->childNodes) {
 						$innerContent = '';
 						foreach($element->childNodes as $child) {
 							$innerContent .= $dom->saveHTML($child);

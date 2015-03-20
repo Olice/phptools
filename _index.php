@@ -39,7 +39,7 @@ include 'classes/OliceXmlSplitter.php';
 include 'classes/OliceXmlHelper.php';
 
 
-$module = 8;
+$module = 6;
 
 $src = 'm' . $module . '/';
 $dest= 'm' . $module . '-exported/';
